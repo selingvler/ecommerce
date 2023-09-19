@@ -1,0 +1,13 @@
+version: '3'
+services:
+  identitydevelopmentpostgre:
+    image: postgres:15.2
+    restart: always
+    ports:
+      - "5652:5432"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: adminUser
+      POSTGRES_PASSWORD: abcadef
+      POSTGRES_DB: webcommerceDb
