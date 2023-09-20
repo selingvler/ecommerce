@@ -7,5 +7,6 @@ public interface IUserProductBusiness
 {
     public Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model);
     public IEnumerable<UserProduct> ViewUserProducts();
+    public Task DeleteUserProduct(Guid id);
     public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId);
 }

@@ -24,4 +24,9 @@ public class ProductBusiness : IProductBusiness
     {
         await _service.DeleteProduct(id);
     }
+
+    public IEnumerable<Product> ViewProducts()
+    {
+        return _service.ViewProducts();
+    }
 }

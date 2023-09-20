@@ -26,6 +26,11 @@ public class UserProductBusiness : IUserProductBusiness
         return _service.ViewUserProducts();
     }
 
+    public async Task DeleteUserProduct(Guid id)
+    {
+        await _service.DeleteUserProduct(id);
+    }
+
     public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
     {
         return _service.GetUserProductsByAscending(productId);

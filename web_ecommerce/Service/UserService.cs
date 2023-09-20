@@ -29,9 +29,14 @@ public class UserService : IUserService
         await _repository.Delete(user);
     }
 
+    public async Task<User> GetById(Guid id)
+    {
+        return await _repository.Get(x => x.Id == id);
+    }
+
     public async void CheckUserTypeForManager(Guid userId)
     {
-        var user = await _repository.Get(x => x.Id == userId);
+        var user = await GetById(userId);
         if (user == null) throw new Exception("Girdiğiniz id ile bir kullanıcı bulunamadı");
         if (user.UserType != "manager")
         {
@@ -41,7 +46,7 @@ public class UserService : IUserService
 
     public async void CheckUserTypeForSeller(Guid userId)
     {
-        var user = await _repository.Get(x => x.Id == userId);
+        var user = await GetById(userId);
         if (user == null) throw new Exception("Girdiğiniz id ile bir kullanıcı bulunamadı");
         if (user.UserType != "seller")
         {

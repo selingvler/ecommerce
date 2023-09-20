@@ -26,4 +26,10 @@ public class ProductController
     {
         await _business.DeleteProduct(id);
     }
+
+    [HttpGet]
+    public IEnumerable<Product> ViewProducts()
+    {
+        return _business.ViewProducts();
+    }
 }

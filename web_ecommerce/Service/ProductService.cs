@@ -24,4 +24,9 @@ public class ProductService : IProductService
         if (product == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(product);
     }
+
+    public IEnumerable<Product> ViewProducts()
+    {
+        return _repository.GetAll(null).ToList();
+    }
 }

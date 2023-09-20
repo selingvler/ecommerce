@@ -27,6 +27,12 @@ public class UserProductController
         return _business.ViewUserProducts();
     }
 
+    [HttpDelete]
+    public async Task DeleteUserProduct(Guid id)
+    {
+        await _business.DeleteUserProduct(id);
+    }
+
     [HttpGet("ByAscending")]
     public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
     {

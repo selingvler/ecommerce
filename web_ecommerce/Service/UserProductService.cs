@@ -22,6 +22,13 @@ public class UserProductService : IUserProductService
         return _repository.GetAll(null);
     }
 
+    public async Task DeleteUserProduct(Guid id)
+    {
+        var userProduct = await _repository.Get(x => x.Id == id);
+        if (userProduct == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
+        await _repository.Delete(userProduct);
+    }
+
     public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
     {
         var list = _repository.GetAll(x=>x.ProductId == productId).ToList();

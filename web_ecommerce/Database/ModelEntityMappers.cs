@@ -2,6 +2,7 @@
 using web_ecommerce.RequestModels.Product;
 using web_ecommerce.RequestModels.User;
 using web_ecommerce.RequestModels.UserProduct;
+using web_ecommerce.RequestResponseModels.Category;
 
 namespace web_ecommerce.Database;
 
@@ -38,6 +39,15 @@ public static class ModelEntityMappers
             ProductId = model.ProductId,
             Price = model.Price,
             Unit = model.Unit
+        };
+    }
+
+    public static Category MapToEntity(this CreateCategoryRequestModel model)
+    {
+        return new Category
+        {
+            Id = Guid.NewGuid(),
+            CategoryName = model.CategoryName
         };
     }
 }
