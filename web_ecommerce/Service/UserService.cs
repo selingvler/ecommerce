@@ -28,4 +28,24 @@ public class UserService : IUserService
         if (user == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(user);
     }
+
+    public async void CheckUserTypeForManager(Guid userId)
+    {
+        var user = await _repository.Get(x => x.Id == userId);
+        if (user == null) throw new Exception("Girdiğiniz id ile bir kullanıcı bulunamadı");
+        if (user.UserType != "manager")
+        {
+            throw new Exception("Ürün eklemek için yönetici olmanız gereklidir");
+        }
+    }
+
+    public async void CheckUserTypeForSeller(Guid userId)
+    {
+        var user = await _repository.Get(x => x.Id == userId);
+        if (user == null) throw new Exception("Girdiğiniz id ile bir kullanıcı bulunamadı");
+        if (user.UserType != "seller")
+        {
+            throw new Exception("Ürüne fiyat verebilmek için satıcı olmanız gereklidir");
+        }
+    }
 }
