@@ -1,6 +1,6 @@
 ﻿using web_ecommerce.Database;
 using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.Product;
+using web_ecommerce.RequestResponseModels.Product;
 
 namespace web_ecommerce.Service;
 
@@ -15,14 +15,17 @@ public class ProductService : IProductService
     
     public async Task<Guid> AddProduct(CreateProductRequestModel model)
     {
-        return await _repository.Add(model.MapToEntity());
+        var id = await _repository.Add(model.MapToEntity());
+        await _repository.SaveChange();
+        return id;
     }
 
     public async Task DeleteProduct(Guid id)
     {
         var product = await _repository.Get(x => x.Id == id);
-        if (product == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
+        if (product == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(product);
+        await _repository.SaveChange();
     }
 
     public IEnumerable<Product> ViewProducts()

@@ -30,8 +30,8 @@ public class CategoryController
         return _business.ViewCategories();
     }
 
-    [HttpDelete]
-    public async Task DeleteCategory(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task DeleteCategory([FromRoute] Guid id)
     {
         await _business.DeleteCategory(id);
     }

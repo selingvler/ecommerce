@@ -1,10 +1,10 @@
 ﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.User;
+using web_ecommerce.RequestResponseModels.User;
 using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
 
-public class UserBusiness : IUserBusiness
+public partial class UserBusiness : IUserBusiness
 {
     private readonly IUserService _service;
     public UserBusiness(IUserService service)
@@ -14,6 +14,7 @@ public class UserBusiness : IUserBusiness
     
     public async Task<Guid> AddUser(CreateUserRequestModel model)
     {
+        AddUserValidation(model);
         return await _service.AddUser(model);
     }
 

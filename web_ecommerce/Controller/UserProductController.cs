@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using web_ecommerce.Business;
 using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.UserProduct;
+using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Controller;
 [ApiController]
@@ -18,6 +18,8 @@ public class UserProductController
     public async Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model)
     {
         if (model == null) throw new Exception("İstek boş olamaz");
+        model?.InitializeUserId(model.UserId);
+        model?.InitializeProductId(model.ProductId);
         return await _business.RegisterUserProduct(model);
     }
 
@@ -27,15 +29,15 @@ public class UserProductController
         return _business.ViewUserProducts();
     }
 
-    [HttpDelete]
-    public async Task DeleteUserProduct(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task DeleteUserProduct([FromRoute] Guid id)
     {
         await _business.DeleteUserProduct(id);
     }
 
-    [HttpGet("ByAscending")]
-    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
+    [HttpGet("{id:guid}/ByAscending")]
+    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid id)
     {
-        return _business.GetUserProductsByAscending(productId);
+        return _business.GetUserProductsByAscending(id);
     }
 }

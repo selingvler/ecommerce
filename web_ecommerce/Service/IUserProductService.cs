@@ -1,5 +1,5 @@
 ﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.UserProduct;
+using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Service;
 

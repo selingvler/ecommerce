@@ -1,8 +1,8 @@
 ﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.Product;
-using web_ecommerce.RequestModels.User;
-using web_ecommerce.RequestModels.UserProduct;
 using web_ecommerce.RequestResponseModels.Category;
+using web_ecommerce.RequestResponseModels.Product;
+using web_ecommerce.RequestResponseModels.User;
+using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Database;
 

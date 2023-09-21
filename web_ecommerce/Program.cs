@@ -15,6 +15,12 @@ builder.Services.AddScoped<IUserBusiness, UserBusiness>();
 builder.Services.AddScoped<IGenericRepository<Product>, GenericRepository<Product>>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductBusiness, ProductBusiness>();
+builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
+builder.Services.AddScoped<IGenericRepository<UserProduct>, GenericRepository<UserProduct>>();
+builder.Services.AddScoped<IUserProductService, UserProductService>();
+builder.Services.AddScoped<IUserProductBusiness, UserProductBusiness>();
 
 
 builder.Services.AddEndpointsApiExplorer();

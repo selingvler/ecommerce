@@ -14,14 +14,17 @@ public class CategoryService : ICategoryService
     }
     public async Task<Guid> AddCategory(CreateCategoryRequestModel model)
     {
-        return await _repository.Add(model.MapToEntity());
+        var id = await _repository.Add(model.MapToEntity());
+        await _repository.SaveChange();
+        return id;
     }
 
     public async Task DeleteCategory(Guid id)
     {
         var category = await _repository.Get(x => x.Id == id);
-        if (category == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
+        if (category == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(category);
+        await _repository.SaveChange();
     }
 
     public IEnumerable<Category> ViewCategories()

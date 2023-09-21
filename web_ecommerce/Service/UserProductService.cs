@@ -1,6 +1,6 @@
 ﻿using web_ecommerce.Database;
 using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.UserProduct;
+using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Service;
 
@@ -14,7 +14,9 @@ public class UserProductService : IUserProductService
     }
     public async Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model)
     {
-        return await _repository.Add(model.MapToEntity());
+        var id = await _repository.Add(model.MapToEntity());
+        await _repository.SaveChange();
+        return id;
     }
 
     public IEnumerable<UserProduct> ViewUserProducts()
@@ -25,13 +27,14 @@ public class UserProductService : IUserProductService
     public async Task DeleteUserProduct(Guid id)
     {
         var userProduct = await _repository.Get(x => x.Id == id);
-        if (userProduct == null) throw new Exception("İşlem yapmak istediğiniz kayıt bulunamadı");
+        if (userProduct == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(userProduct);
+        await _repository.SaveChange();
     }
 
     public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
     {
-        var list = _repository.GetAll(x=>x.ProductId == productId).ToList();
+        var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();
         return list.OrderBy(x => x.Price);
     }
 }

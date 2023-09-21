@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using web_ecommerce.Business;
 using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.Product;
-using web_ecommerce.RequestModels.User;
+using web_ecommerce.RequestResponseModels.Product;
 
 namespace web_ecommerce.Controller;
 [ApiController]
@@ -18,11 +17,13 @@ public class ProductController
     [HttpPost]
     public async Task RegisterProduct(CreateProductRequestModel model)
     {
+        model?.InitializeUserId(model.UserId);
+        model?.InitializeCategoryId(model.CategoryId);
         await _business.AddProduct(model);
     }
 
-    [HttpDelete]
-    public async Task DeleteProduct(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task DeleteProduct([FromRoute] Guid id)
     {
         await _business.DeleteProduct(id);
     }

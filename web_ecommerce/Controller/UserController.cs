@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using web_ecommerce.Business;
 using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.User;
+using web_ecommerce.RequestResponseModels.User;
 
 namespace web_ecommerce.Controller;
 [ApiController]
@@ -27,8 +27,8 @@ public class UserController
         return _business.ViewUsers();
     }
 
-    [HttpDelete]
-    public async Task DeleteUser(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task DeleteUser([FromRoute] Guid id)
     {
         await _business.DeleteUser(id);
     }

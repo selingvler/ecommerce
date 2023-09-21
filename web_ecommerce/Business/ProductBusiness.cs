@@ -1,22 +1,23 @@
 ﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestModels.Product;
+using web_ecommerce.RequestResponseModels.Product;
 using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
 
-public class ProductBusiness : IProductBusiness
+public partial class ProductBusiness : IProductBusiness
 {
     private readonly IProductService _service;
-    private readonly IUserService _userService;
-    public ProductBusiness(IProductService service, IUserService userService)
+    private readonly IUserBusiness _userValidation;
+    public ProductBusiness(IProductService service, IUserBusiness userValidation)
     {
         _service = service;
-        _userService = userService;
+        _userValidation = userValidation;
     }
     
     public async Task<Guid> AddProduct(CreateProductRequestModel model)
     {
-        _userService.CheckUserTypeForManager(model.UserId);
+        AddProductValidation(model);
+        await _userValidation.CheckUserTypeForManager(model.UserId);
         return await _service.AddProduct(model);
     }
 

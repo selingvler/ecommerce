@@ -17,7 +17,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         entity.Id = Guid.NewGuid();
         await _dbContext.Set<T>().AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
         return entity.Id;
     }
 
@@ -36,7 +35,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public Task Delete(T entity)
     {
         _dbContext.Remove(entity);
-        _dbContext.SaveChangesAsync();
         return Task.CompletedTask;
+    }
+
+    public async Task<int> SaveChange()
+    {
+        return await _dbContext.SaveChangesAsync();
     }
 }

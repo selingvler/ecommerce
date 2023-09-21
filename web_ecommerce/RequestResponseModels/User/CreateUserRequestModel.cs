@@ -1,4 +1,4 @@
-﻿namespace web_ecommerce.RequestModels.User;
+﻿namespace web_ecommerce.RequestResponseModels.User;
 
 public class CreateUserRequestModel
 {

@@ -4,7 +4,7 @@ using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
 
-public class CategoryBusiness : ICategoryBusiness
+public partial class CategoryBusiness : ICategoryBusiness
 {
     private readonly ICategoryService _service;
     public CategoryBusiness(ICategoryService service)
@@ -13,6 +13,7 @@ public class CategoryBusiness : ICategoryBusiness
     }
     public async Task<Guid> AddCategory(CreateCategoryRequestModel model)
     {
+        AddCategoryValidation(model);
         return await _service.AddCategory(model);
     }
 
