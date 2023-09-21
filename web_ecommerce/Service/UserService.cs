@@ -19,9 +19,9 @@ public class UserService : IUserService
         return id;
     }
 
-    public IEnumerable<User> ViewUsers()
+    public IEnumerable<UserResponseModel> ViewUsers()
     {
-        return _repository.GetAll(null);
+        return _repository.GetAll(null).Select(x=>x.MapToModel());
     }
 
     public async Task DeleteUser(Guid id)
@@ -32,8 +32,9 @@ public class UserService : IUserService
         await _repository.SaveChange();
     }
 
-    public async Task<User> GetById(Guid id)
+    public async Task<UserResponseModel> GetById(Guid id)
     {
-        return await _repository.Get(x => x.Id == id);
+        var user = await _repository.Get(x => x.Id == id);
+        return user.MapToModel();
     }
 }

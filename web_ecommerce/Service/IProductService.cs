@@ -7,5 +7,5 @@ public interface IProductService
 {
     public Task<Guid> AddProduct(CreateProductRequestModel model);
     public Task DeleteProduct(Guid id);
-    public IEnumerable<Product> ViewProducts();
+    public IEnumerable<ProductResponseModel> ViewProducts();
 }

@@ -22,7 +22,7 @@ public class UserController
     }
 
     [HttpGet]
-    public IEnumerable<User> ViewUsers()
+    public IEnumerable<UserResponseModel> ViewUsers()
     {
         return _business.ViewUsers();
     }

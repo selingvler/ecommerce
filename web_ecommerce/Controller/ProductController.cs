@@ -29,7 +29,7 @@ public class ProductController
     }
 
     [HttpGet]
-    public IEnumerable<Product> ViewProducts()
+    public IEnumerable<ProductResponseModel> ViewProducts()
     {
         return _business.ViewProducts();
     }

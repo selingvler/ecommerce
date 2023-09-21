@@ -22,7 +22,7 @@ public partial class CategoryBusiness : ICategoryBusiness
         await _service.DeleteCategory(id);
     }
 
-    public IEnumerable<Category> ViewCategories()
+    public IEnumerable<CategoryResponseModel> ViewCategories()
     {
         return _service.ViewCategories();
     }

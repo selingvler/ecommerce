@@ -7,5 +7,5 @@ public interface ICategoryBusiness
 {
     public Task<Guid> AddCategory(CreateCategoryRequestModel model);
     public Task DeleteCategory(Guid id);
-    public IEnumerable<Category> ViewCategories();
+    public IEnumerable<CategoryResponseModel> ViewCategories();
 }

@@ -1,5 +1,4 @@
-﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestResponseModels.UserProduct;
+﻿using web_ecommerce.RequestResponseModels.UserProduct;
 using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
@@ -21,7 +20,7 @@ public partial class UserProductBusiness : IUserProductBusiness
         return await _service.RegisterUserProduct(model);
     }
 
-    public IEnumerable<UserProduct> ViewUserProducts()
+    public IEnumerable<UserProductResponseModel> ViewUserProducts()
     {
         return _service.ViewUserProducts();
     }
@@ -31,7 +30,7 @@ public partial class UserProductBusiness : IUserProductBusiness
         await _service.DeleteUserProduct(id);
     }
 
-    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
+    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         return _service.GetUserProductsByAscending(productId);
     }

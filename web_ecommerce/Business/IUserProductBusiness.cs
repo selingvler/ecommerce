@@ -1,12 +1,11 @@
-﻿using web_ecommerce.Entities;
-using web_ecommerce.RequestResponseModels.UserProduct;
+﻿using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Business;
 
 public interface IUserProductBusiness
 {
     public Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model);
-    public IEnumerable<UserProduct> ViewUserProducts();
+    public IEnumerable<UserProductResponseModel> ViewUserProducts();
     public Task DeleteUserProduct(Guid id);
-    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId);
+    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId);
 }

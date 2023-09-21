@@ -27,8 +27,8 @@ public class CategoryService : ICategoryService
         await _repository.SaveChange();
     }
 
-    public IEnumerable<Category> ViewCategories()
+    public IEnumerable<CategoryResponseModel> ViewCategories()
     {
-        return _repository.GetAll(null).ToList();
+        return _repository.GetAll(null).Select(x=>x.MapToModel()).ToList();
     }
 }

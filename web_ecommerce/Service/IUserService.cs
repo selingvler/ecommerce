@@ -6,7 +6,7 @@ namespace web_ecommerce.Service;
 public interface IUserService
 {
     public Task<Guid> AddUser(CreateUserRequestModel model);
-    public IEnumerable<User> ViewUsers();
+    public IEnumerable<UserResponseModel> ViewUsers();
     public Task DeleteUser(Guid id);
-    public Task<User> GetById(Guid id);
+    public Task<UserResponseModel> GetById(Guid id);
 }

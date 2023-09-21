@@ -18,7 +18,7 @@ public partial class UserBusiness : IUserBusiness
         return await _service.AddUser(model);
     }
 
-    public IEnumerable<User> ViewUsers()
+    public IEnumerable<UserResponseModel> ViewUsers()
     {
         return _service.ViewUsers();
     }

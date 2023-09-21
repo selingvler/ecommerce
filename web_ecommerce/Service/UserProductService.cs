@@ -19,9 +19,9 @@ public class UserProductService : IUserProductService
         return id;
     }
 
-    public IEnumerable<UserProduct> ViewUserProducts()
+    public IEnumerable<UserProductResponseModel> ViewUserProducts()
     {
-        return _repository.GetAll(null);
+        return _repository.GetAll(null).Select(x=>x.MapToModel());
     }
 
     public async Task DeleteUserProduct(Guid id)
@@ -32,9 +32,9 @@ public class UserProductService : IUserProductService
         await _repository.SaveChange();
     }
 
-    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid productId)
+    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();
-        return list.OrderBy(x => x.Price);
+        return list.OrderBy(x => x.Price).Select(x=>x.MapToModel());
     }
 }

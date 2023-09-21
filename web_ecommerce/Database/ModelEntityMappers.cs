@@ -50,4 +50,47 @@ public static class ModelEntityMappers
             CategoryName = model.CategoryName
         };
     }
+
+    public static CategoryResponseModel MapToModel(this Category category)
+    {
+        return new CategoryResponseModel
+        {
+            CategoryName = category.CategoryName,
+            Id = category.Id
+        };
+    }
+
+    public static UserResponseModel MapToModel(this User user)
+    {
+        return new UserResponseModel
+        {
+            Id = user.Id,
+            Email = user.Email,
+            UserType = user.UserType,
+            UserName = user.UserName,
+            Password = user.Password
+        };
+    }
+
+    public static UserProductResponseModel MapToModel(this UserProduct userProduct)
+    {
+        return new UserProductResponseModel
+        {
+            Id = userProduct.Id,
+            Price = userProduct.Price,
+            Unit = userProduct.Unit,
+            UserId = userProduct.UserId,
+            ProductId = userProduct.ProductId
+        };
+    }
+
+    public static ProductResponseModel MapToModel(this Product product)
+    {
+        return new ProductResponseModel
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            CategoryId = product.CategoryId
+        };
+    }
 }

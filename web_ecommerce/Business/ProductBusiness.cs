@@ -26,7 +26,7 @@ public partial class ProductBusiness : IProductBusiness
         await _service.DeleteProduct(id);
     }
 
-    public IEnumerable<Product> ViewProducts()
+    public IEnumerable<ProductResponseModel> ViewProducts()
     {
         return _service.ViewProducts();
     }

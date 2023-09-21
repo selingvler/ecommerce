@@ -25,7 +25,7 @@ public class CategoryController
     }
     
     [HttpGet]
-    public IEnumerable<Category> ViewCategories()
+    public IEnumerable<CategoryResponseModel> ViewCategories()
     {
         return _business.ViewCategories();
     }

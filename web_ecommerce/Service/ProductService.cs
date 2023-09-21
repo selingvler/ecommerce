@@ -28,8 +28,8 @@ public class ProductService : IProductService
         await _repository.SaveChange();
     }
 
-    public IEnumerable<Product> ViewProducts()
+    public IEnumerable<ProductResponseModel> ViewProducts()
     {
-        return _repository.GetAll(null).ToList();
+        return _repository.GetAll(null).Select(x=>x.MapToModel()).ToList();
     }
 }

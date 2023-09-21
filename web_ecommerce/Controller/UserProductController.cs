@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using web_ecommerce.Business;
-using web_ecommerce.Entities;
 using web_ecommerce.RequestResponseModels.UserProduct;
 
 namespace web_ecommerce.Controller;
@@ -24,7 +23,7 @@ public class UserProductController
     }
 
     [HttpGet]
-    public IEnumerable<UserProduct> ViewUserProducts()
+    public IEnumerable<UserProductResponseModel> ViewUserProducts()
     {
         return _business.ViewUserProducts();
     }
@@ -36,7 +35,7 @@ public class UserProductController
     }
 
     [HttpGet("{id:guid}/ByAscending")]
-    public IEnumerable<UserProduct> GetUserProductsByAscending(Guid id)
+    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid id)
     {
         return _business.GetUserProductsByAscending(id);
     }
