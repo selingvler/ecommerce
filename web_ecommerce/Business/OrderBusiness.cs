@@ -1,4 +1,5 @@
-﻿using web_ecommerce.Service;
+﻿using web_ecommerce.RequestResponseModels.Orders;
+using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
 
@@ -17,5 +18,15 @@ public partial class OrderBusiness : IOrderBusiness
     {
         await CreateOrderValidation(userId);
         return await _service.AddOrder(userId);
+    }
+
+    public async Task DeleteOrder(Guid orderId)
+    {
+        await _service.DeleteOrder(orderId);
+    }
+
+    public IEnumerable<OrderResponseModel> ViewOrders()
+    {
+        return _service.ViewOrders();
     }
 }

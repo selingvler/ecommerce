@@ -22,4 +22,9 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
     {
         return _service.ViewOrderDetails(orderId);
     }
+
+    public IEnumerable<OrderInstanceResponseModel> View()
+    {
+        return _service.View();
+    }
 }

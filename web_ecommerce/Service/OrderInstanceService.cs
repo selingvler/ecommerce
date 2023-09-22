@@ -51,4 +51,9 @@ public class OrderInstanceService : IOrderInstanceService
             OrderUnit = model.OrderUnit
         };
     }
+
+    public IEnumerable<OrderInstanceResponseModel> View()
+    {
+        return _repository.GetAll(null).Select(x => x.MapToModel());
+    }
 }

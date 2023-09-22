@@ -21,7 +21,12 @@ builder.Services.AddScoped<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddScoped<IGenericRepository<UserProduct>, GenericRepository<UserProduct>>();
 builder.Services.AddScoped<IUserProductService, UserProductService>();
 builder.Services.AddScoped<IUserProductBusiness, UserProductBusiness>();
-
+builder.Services.AddScoped<IGenericRepository<OrderInstance>, GenericRepository<OrderInstance>>();
+builder.Services.AddScoped<IOrderInstanceService, OrderInstanceService>();
+builder.Services.AddScoped<IOrderInstanceBusiness, OrderInstanceBusiness>();
+builder.Services.AddScoped<IGenericRepository<Order>, GenericRepository<Order>>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderBusiness, OrderBusiness>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

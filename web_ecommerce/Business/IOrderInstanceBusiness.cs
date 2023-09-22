@@ -7,4 +7,5 @@ public interface IOrderInstanceBusiness
 {
     public Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model);
     public Task<OrderInstanceResponseModel> ViewOrderDetails(Guid orderId);
+    public IEnumerable<OrderInstanceResponseModel> View();
 }

@@ -27,4 +27,10 @@ public class OrderInstanceController
     {
         return await _business.ViewOrderDetails(id);
     }
+
+    [HttpGet]
+    public IEnumerable<OrderInstanceResponseModel> View()
+    {
+        return _business.View();
+    }
 }

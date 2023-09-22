@@ -1,6 +1,7 @@
 ﻿using web_ecommerce.Entities;
 using web_ecommerce.RequestResponseModels.Category;
 using web_ecommerce.RequestResponseModels.OrderInstances;
+using web_ecommerce.RequestResponseModels.Orders;
 using web_ecommerce.RequestResponseModels.Product;
 using web_ecommerce.RequestResponseModels.User;
 using web_ecommerce.RequestResponseModels.UserProduct;
@@ -131,6 +132,15 @@ public static class ModelEntityMappers
             UserProductId = orderInstance.UserProductId,
             OrderPrice = orderInstance.OrderPrice,
             OrderUnit = orderInstance.OrderUnit
+        };
+    }
+
+    public static OrderResponseModel MapToModel(this Order order)
+    {
+        return new OrderResponseModel
+        {
+            OrderId = order.Id,
+            UserId = order.UserId
         };
     }
     
