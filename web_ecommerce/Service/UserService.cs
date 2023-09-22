@@ -41,9 +41,9 @@ public class UserService : IUserService
         await _repository.SaveChange();
     }
 
-    public async Task<UserResponseModel> GetById(Guid id)
+    public async Task<User> GetById(Guid id)
     {
         var user = await _repository.Get(x => x.Id == id);
-        return user.MapToModel();
+        return user;
     }
 }

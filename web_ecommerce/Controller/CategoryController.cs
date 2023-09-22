@@ -20,7 +20,6 @@ public class CategoryController
     [HttpPost]
     public async Task<Guid> AddCategory(CreateCategoryRequestModel model)
     {
-        if (model == null) throw new Exception("İstek boş olamaz");
         return await _business.AddCategory(model);
     }
     

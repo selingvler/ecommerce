@@ -42,6 +42,12 @@ public class UserProductService : IUserProductService
         await _repository.SaveChange();
     }
 
+    public async Task GetNullCheck(Guid id)
+    {
+        var userProduct = await _repository.Get(x => x.Id == id);
+        if (userProduct == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+    }
+
     public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();

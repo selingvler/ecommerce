@@ -1,5 +1,6 @@
 ﻿using web_ecommerce.Entities;
 using web_ecommerce.RequestResponseModels.Category;
+using web_ecommerce.RequestResponseModels.OrderInstances;
 using web_ecommerce.RequestResponseModels.Product;
 using web_ecommerce.RequestResponseModels.User;
 using web_ecommerce.RequestResponseModels.UserProduct;
@@ -112,4 +113,25 @@ public static class ModelEntityMappers
             Password = model.Password
         };
     }
+
+    public static Order MapToEntity(this Guid userId)
+    {
+        return new Order
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId
+        };
+    }
+    
+    public static OrderInstanceResponseModel MapToModel(this OrderInstance orderInstance)
+    {
+        return new OrderInstanceResponseModel
+        {
+            OrderId = orderInstance.OrderId,
+            UserProductId = orderInstance.UserProductId,
+            OrderPrice = orderInstance.OrderPrice,
+            OrderUnit = orderInstance.OrderUnit
+        };
+    }
+    
 }

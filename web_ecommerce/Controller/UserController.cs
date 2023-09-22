@@ -17,7 +17,6 @@ public class UserController
     [HttpPost]
     public async Task<Guid> AddUser(CreateUserRequestModel model)
     {
-        if (model == null) throw new Exception("İstek boş olamaz");
         return await _business.AddUser(model);
     }
 

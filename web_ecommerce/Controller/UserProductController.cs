@@ -16,7 +16,6 @@ public class UserProductController
     [HttpPost]
     public async Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model)
     {
-        if (model == null) throw new Exception("İstek boş olamaz");
         model?.InitializeUserId(model.UserId);
         model?.InitializeProductId(model.ProductId);
         return await _business.RegisterUserProduct(model);
