@@ -32,4 +32,11 @@ public class UserController
     {
         await _business.DeleteUser(id);
     }
+
+    [HttpPut]
+    public async Task UpdatePassword(UpdateUserPasswordRequestModel model)
+    {
+        model?.Initialize(model.Id);
+        await _business.UpdatePassword(model);
+    }
 }

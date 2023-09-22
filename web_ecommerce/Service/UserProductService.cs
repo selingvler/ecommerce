@@ -32,6 +32,16 @@ public class UserProductService : IUserProductService
         await _repository.SaveChange();
     }
 
+    public async Task UpdateUserProduct(UpdateUserProductRequestModel model)
+    {
+        var userProduct = await _repository.Get(x => x.Id == model.Id);
+        if (userProduct == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+        userProduct.Price = model.Price;
+        userProduct.Unit = model.Unit;
+        await _repository.Update(userProduct);
+        await _repository.SaveChange();
+    }
+
     public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();

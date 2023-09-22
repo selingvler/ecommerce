@@ -39,4 +39,11 @@ public class UserProductController
     {
         return _business.GetUserProductsByAscending(id);
     }
+
+    [HttpPut]
+    public async Task UpdateUserProduct(UpdateUserProductRequestModel model)
+    {
+        model?.Initialize(model.Id);
+        await _business.UpdateUserProduct(model);
+    }
 }

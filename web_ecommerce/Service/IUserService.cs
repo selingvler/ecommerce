@@ -8,5 +8,6 @@ public interface IUserService
     public Task<Guid> AddUser(CreateUserRequestModel model);
     public IEnumerable<UserResponseModel> ViewUsers();
     public Task DeleteUser(Guid id);
+    public Task UpdateUserPassword(UpdateUserPasswordRequestModel model);
     public Task<UserResponseModel> GetById(Guid id);
 }

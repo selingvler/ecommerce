@@ -93,4 +93,23 @@ public static class ModelEntityMappers
             CategoryId = product.CategoryId
         };
     }
+
+    public static UserProduct MapToEntity(this UpdateUserProductRequestModel model)
+    {
+        return new UserProduct
+        {
+            Id = model.Id,
+            Price = model.Price,
+            Unit = model.Unit
+        };
+    }
+
+    public static User MapToEntity(this UpdateUserPasswordRequestModel model)
+    {
+        return new User
+        {
+            Id = model.Id,
+            Password = model.Password
+        };
+    }
 }

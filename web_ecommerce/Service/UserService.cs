@@ -32,6 +32,15 @@ public class UserService : IUserService
         await _repository.SaveChange();
     }
 
+    public async Task UpdateUserPassword(UpdateUserPasswordRequestModel model)
+    {
+        var user = await _repository.Get(x => x.Id == model.Id);
+        if (user == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+        user.Password = model.Password;
+        await _repository.Update(user);
+        await _repository.SaveChange();
+    }
+
     public async Task<UserResponseModel> GetById(Guid id)
     {
         var user = await _repository.Get(x => x.Id == id);

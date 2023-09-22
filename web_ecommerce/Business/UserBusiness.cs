@@ -27,4 +27,10 @@ public partial class UserBusiness : IUserBusiness
     {
         await _service.DeleteUser(id);
     }
+
+    public async Task UpdatePassword(UpdateUserPasswordRequestModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Password)) throw new SlnException("şifre giriniz");
+        await _service.UpdateUserPassword(model);
+    }
 }

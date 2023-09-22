@@ -38,6 +38,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return Task.CompletedTask;
     }
 
+    public Task Update(T entity)
+    {
+        _dbContext.Set<T>().Entry(entity).State = EntityState.Modified;
+        return Task.CompletedTask;
+    }
+
     public async Task<int> SaveChange()
     {
         return await _dbContext.SaveChangesAsync();

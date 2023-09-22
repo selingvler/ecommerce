@@ -30,6 +30,12 @@ public partial class UserProductBusiness : IUserProductBusiness
         await _service.DeleteUserProduct(id);
     }
 
+    public async Task UpdateUserProduct(UpdateUserProductRequestModel model)
+    {
+        await UpdateUserProductValidation(model);
+        await _service.UpdateUserProduct(model);
+    }
+
     public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         return _service.GetUserProductsByAscending(productId);
