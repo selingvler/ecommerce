@@ -8,4 +8,5 @@ public interface ICategoryService
     public Task<Guid> AddCategory(CreateCategoryRequestModel model);
     public Task DeleteCategory(Guid id);
     public IEnumerable<CategoryResponseModel> ViewCategories();
+    public Task CheckCategory(Guid id);
 }

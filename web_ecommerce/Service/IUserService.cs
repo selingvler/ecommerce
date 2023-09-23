@@ -10,4 +10,5 @@ public interface IUserService
     public Task DeleteUser(Guid id);
     public Task UpdateUserPassword(UpdateUserPasswordRequestModel model);
     public Task<User> GetById(Guid id);
+    public Task CheckUser(Guid id);
 }

@@ -46,4 +46,10 @@ public class UserService : IUserService
         var user = await _repository.Get(x => x.Id == id);
         return user;
     }
+
+    public async Task CheckUser(Guid id)
+    {
+        var user = await _repository.Get(x => x.Id == id)
+            ?? throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+    }
 }

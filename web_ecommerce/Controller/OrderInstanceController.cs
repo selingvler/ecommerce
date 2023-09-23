@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 using web_ecommerce.Business;
-using web_ecommerce.Entities;
 using web_ecommerce.RequestResponseModels.OrderInstances;
 
 namespace web_ecommerce.Controller;
@@ -22,10 +22,10 @@ public class OrderInstanceController
         return await _business.CreateOrderInstance(model);
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<OrderInstanceResponseModel> ViewOrderDetails([FromRoute] Guid id)
+    [HttpGet("{orderId:guid}")]
+    public async Task<IEnumerable> ViewOrderDetails([FromRoute] Guid orderId)
     {
-        return await _business.ViewOrderDetails(id);
+        return await _business.ViewOrderDetails(orderId);
     }
 
     [HttpGet]

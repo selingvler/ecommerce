@@ -7,13 +7,16 @@ namespace web_ecommerce.Service;
 public class UserProductService : IUserProductService
 {
     private readonly IGenericRepository<UserProduct> _repository;
+    private readonly IProductService _productService;
 
-    public UserProductService(IGenericRepository<UserProduct> repository)
+    public UserProductService(IGenericRepository<UserProduct> repository, IProductService productService)
     {
         _repository = repository;
+        _productService = productService;
     }
     public async Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model)
     {
+        await _productService.CheckProduct(model.ProductId);
         var id = await _repository.Add(model.MapToEntity());
         await _repository.SaveChange();
         return id;
@@ -41,13 +44,7 @@ public class UserProductService : IUserProductService
         await _repository.Update(userProduct);
         await _repository.SaveChange();
     }
-
-    public async Task GetNullCheck(Guid id)
-    {
-        var userProduct = await _repository.Get(x => x.Id == id);
-        if (userProduct == null) throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
-    }
-
+    
     public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
     {
         var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();

@@ -1,4 +1,4 @@
-﻿using System.Security;
+﻿using System.Collections;
 using web_ecommerce.Database;
 using web_ecommerce.Entities;
 using web_ecommerce.RequestResponseModels.OrderInstances;
@@ -9,29 +9,36 @@ public class OrderInstanceService : IOrderInstanceService
 {
     private readonly IGenericRepository<OrderInstance> _repository;
     private readonly IGenericRepository<UserProduct> _userProductRepository;
+    private readonly IOrderService _orderService;
 
-    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository)
+    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository, IOrderService orderService)
     {
         _repository = repository;
         _userProductRepository = userProductRepository;
+        _orderService = orderService;
     }
 
-    public async Task<OrderInstanceResponseModel> ViewOrderDetails(Guid orderId)
+    public async Task<IEnumerable> ViewOrderDetails(Guid orderId)
     {
-        var order = await _repository.Get(x => x.OrderId == orderId) ??
-                    throw new SlnException("girdiğiniz id ile sipariş bulunamadı");
-        return order.MapToModel();
+        await _orderService.CheckOrder(orderId);
+        return _repository.GetAll(x => x.OrderId == orderId).ToList().Select(x => x.MapToModel());
     }
 
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
     {
+        await _orderService.CheckOrder(model.OrderId);
         var userProduct = await GetUserProduct(model.UserProductId);
         var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
         userProduct.Unit = userProduct.Unit - 1;
         await _userProductRepository.Update(userProduct);
         await _repository.SaveChange();
         return orderInstanceId;
+    }
+    
+    public IEnumerable<OrderInstanceResponseModel> View()
+    {
+        return _repository.GetAll(null).Select(x => x.MapToModel());
     }
 
     public async Task<UserProduct> GetUserProduct(Guid id)
@@ -50,10 +57,5 @@ public class OrderInstanceService : IOrderInstanceService
             OrderPrice = userProduct.Price,
             OrderUnit = model.OrderUnit
         };
-    }
-
-    public IEnumerable<OrderInstanceResponseModel> View()
-    {
-        return _repository.GetAll(null).Select(x => x.MapToModel());
     }
 }

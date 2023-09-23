@@ -32,4 +32,10 @@ public class OrderService : IOrderService
     {
         return _repository.GetAll(null).Select(x => x.MapToModel());
     }
+
+    public async Task CheckOrder(Guid id)
+    {
+        var order = await _repository.Get(x => x.Id == id) ??
+            throw new SlnException("İşlem yapmak istediğiniz kayıt bulunmadı");
+    }
 }

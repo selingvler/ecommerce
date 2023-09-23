@@ -1,4 +1,5 @@
-﻿using web_ecommerce.RequestResponseModels.OrderInstances;
+﻿using System.Collections;
+using web_ecommerce.RequestResponseModels.OrderInstances;
 using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
@@ -18,7 +19,7 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
         return await _service.CreateOrderInstance(model);
     }
 
-    public Task<OrderInstanceResponseModel> ViewOrderDetails(Guid orderId)
+    public Task<IEnumerable> ViewOrderDetails(Guid orderId)
     {
         return _service.ViewOrderDetails(orderId);
     }

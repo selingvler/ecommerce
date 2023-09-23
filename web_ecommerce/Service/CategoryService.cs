@@ -31,4 +31,10 @@ public class CategoryService : ICategoryService
     {
         return _repository.GetAll(null).Select(x=>x.MapToModel()).ToList();
     }
+
+    public async Task CheckCategory(Guid id)
+    {
+        var category = await _repository.Get(x => x.Id == id)
+                       ?? throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+    }
 }
