@@ -10,13 +10,13 @@ public class OrderInstanceEntityMapper : IEntityTypeConfiguration<OrderInstance>
     {
         builder.HasKey(x => x.Id);
         builder.HasOne(orderinstance => orderinstance.UserProduct)
-            .WithOne(userproduct => userproduct.OrderInstance)
-            .HasForeignKey<OrderInstance>(x => x.UserProductId)
+            .WithMany(userproduct => userproduct.OrderInstances)
+            .HasForeignKey(x => x.UserProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(orderinstance => orderinstance.Order)
-            .WithOne(order => order.OrderInstance)
-            .HasForeignKey<OrderInstance>(x => x.OrderId)
+            .WithMany(order => order.OrderInstances)
+            .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

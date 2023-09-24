@@ -8,5 +8,5 @@ public class UserProduct : BaseEntity
     public int Unit { get; set; }
     public virtual User User { get; set; }
     public virtual Product Product { get; set; }
-    public virtual OrderInstance OrderInstance { get; set; }
+    public virtual IEnumerable<OrderInstance> OrderInstances { get; set; }
 }
