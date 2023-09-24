@@ -9,5 +9,5 @@ public interface IUserProductService
     public IEnumerable<UserProductResponseModel> ViewUserProducts();
     public Task DeleteUserProduct(Guid id);
     public Task UpdateUserProduct(UpdateUserProductRequestModel model);
-    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId);
+    public UserProductResponseModel GetCheapestUserProduct(Guid id);
 }

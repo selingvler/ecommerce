@@ -36,8 +36,9 @@ public partial class UserProductBusiness : IUserProductBusiness
         await _service.UpdateUserProduct(model);
     }
 
-    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
+
+    public UserProductResponseModel GetCheapestUserProduct(Guid id)
     {
-        return _service.GetUserProductsByAscending(productId);
+        return _service.GetCheapestUserProduct(id);
     }
 }

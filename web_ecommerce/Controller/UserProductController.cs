@@ -33,16 +33,16 @@ public class UserProductController
         await _business.DeleteUserProduct(id);
     }
 
-    [HttpGet("{id:guid}/ByAscending")]
-    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid id)
-    {
-        return _business.GetUserProductsByAscending(id);
-    }
-
     [HttpPut]
     public async Task UpdateUserProduct(UpdateUserProductRequestModel model)
     {
         model?.Initialize(model.Id);
         await _business.UpdateUserProduct(model);
+    }
+
+    [HttpGet("CheapestProduct/{id:guid}")]
+    public UserProductResponseModel GetCheapestUserProduct([FromRoute] Guid id)
+    {
+        return _business.GetCheapestUserProduct(id);
     }
 }

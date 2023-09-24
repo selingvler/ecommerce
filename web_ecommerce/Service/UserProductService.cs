@@ -44,10 +44,9 @@ public class UserProductService : IUserProductService
         await _repository.Update(userProduct);
         await _repository.SaveChange();
     }
-    
-    public IEnumerable<UserProductResponseModel> GetUserProductsByAscending(Guid productId)
+
+    public UserProductResponseModel GetCheapestUserProduct(Guid id)
     {
-        var list = _repository.GetAll(x=>x.ProductId == productId).Where(x=>x.User.UserType== "seller").ToList();
-        return list.OrderBy(x => x.Price).Select(x=>x.MapToModel());
+        return _repository.GetAll(x=>x.ProductId == id).OrderBy(x=>x.Price).First().MapToModel();
     }
 }
