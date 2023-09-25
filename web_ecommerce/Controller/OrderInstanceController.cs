@@ -18,7 +18,7 @@ public class OrderInstanceController
     [HttpPost]
     public async Task<Guid> OrderProduct(CreateOrderInstanceRequestModel model)
     {
-        model?.Initialize(model.OrderId,model.UserProductId);
+        model?.Initialize(model.OrderId);
         return await _business.CreateOrderInstance(model);
     }
 

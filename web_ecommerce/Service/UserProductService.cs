@@ -45,8 +45,8 @@ public class UserProductService : IUserProductService
         await _repository.SaveChange();
     }
 
-    public UserProductResponseModel GetCheapestUserProduct(Guid id)
+    public UserProduct GetCheapestUserProduct(Guid id)
     {
-        return _repository.GetAll(x=>x.ProductId == id).OrderBy(x=>x.Price).First().MapToModel();
+        return _repository.GetAll(x=>x.ProductId == id).OrderBy(x=>x.Price).First();
     }
 }

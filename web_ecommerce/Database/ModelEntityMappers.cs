@@ -128,6 +128,7 @@ public static class ModelEntityMappers
     {
         return new OrderInstanceResponseModel
         {
+            Id = orderInstance.Id,
             OrderId = orderInstance.OrderId,
             UserProductId = orderInstance.UserProductId,
             OrderPrice = orderInstance.OrderPrice,

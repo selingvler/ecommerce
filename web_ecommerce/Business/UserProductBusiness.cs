@@ -1,4 +1,5 @@
-﻿using web_ecommerce.RequestResponseModels.UserProduct;
+﻿using web_ecommerce.Database;
+using web_ecommerce.RequestResponseModels.UserProduct;
 using web_ecommerce.Service;
 
 namespace web_ecommerce.Business;
@@ -39,6 +40,6 @@ public partial class UserProductBusiness : IUserProductBusiness
 
     public UserProductResponseModel GetCheapestUserProduct(Guid id)
     {
-        return _service.GetCheapestUserProduct(id);
+        return _service.GetCheapestUserProduct(id).MapToModel();
     }
 }

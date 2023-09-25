@@ -7,10 +7,12 @@ namespace web_ecommerce.Business;
 public partial class OrderInstanceBusiness : IOrderInstanceBusiness
 {
     private readonly IOrderInstanceService _service;
+    private readonly IUserProductService _userProductService;
 
-    public OrderInstanceBusiness(IOrderInstanceService service)
+    public OrderInstanceBusiness(IOrderInstanceService service, IUserProductService userProductService)
     {
         _service = service;
+        _userProductService = userProductService;
     }
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
