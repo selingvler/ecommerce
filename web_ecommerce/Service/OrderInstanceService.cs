@@ -27,11 +27,7 @@ public class OrderInstanceService : IOrderInstanceService
         await _orderService.CheckOrder(model.OrderId);
         await _productService.CheckProduct(model.ProductId);
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
-        var orderInstance = MapToEntity(model, userProduct);
-        var orderInstanceId = await _repository.Add(orderInstance);
-        userProduct.Unit = userProduct.Unit - 1;
-        await _userProductRepository.Update(userProduct);
-        await _repository.SaveChange();
+        var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
         return orderInstanceId;
     }
     
@@ -48,7 +44,8 @@ public class OrderInstanceService : IOrderInstanceService
 
     public async Task DeleteOrderInstance(Guid id)
     {
-        var orderInstance = await _repository.Get(x => x.Id == id);
+        var orderInstance = await _repository.Get(x => x.Id == id) ??
+                            throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _repository.Delete(orderInstance);
         await _repository.SaveChange();
     }
@@ -63,5 +60,24 @@ public class OrderInstanceService : IOrderInstanceService
             OrderUnit = model.OrderUnit,
             Status = "waiting"
         };
+    }
+
+
+    public IEnumerable WaitingForApproval(Guid userId)
+    {
+        var productList = _userProductRepository.GetAll(x => x.UserId == userId).ToList();
+        var approvedInstances = _repository.GetAll(x => x.Status == "approved").ToList();
+        var result = new List<OrderInstance>();
+        foreach (var userProduct in productList)
+        {
+            foreach (var instance in approvedInstances)
+            {
+                if (instance.UserProductId == userProduct.Id)
+                {
+                    result.Add(instance);
+                }
+            }
+        }
+        return result.Select(x=>x.MapToModel());
     }
 }

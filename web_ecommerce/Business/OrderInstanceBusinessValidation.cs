@@ -11,4 +11,13 @@ public partial class OrderInstanceBusiness
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
         if (model.OrderUnit > userProduct.Unit) throw new SlnException("Bu üründen satın almak istediğiniz adette bulunmamaktadır");
     }
+
+    private async Task WaitingForApprovalValidation(Guid userId)
+    {
+        var user = await _userService.GetById(userId);
+        if (user.UserType != "seller")
+        {
+            throw new SlnException("Bu sayfayı görüntüleyemezsiniz");
+        }
+    }
 }

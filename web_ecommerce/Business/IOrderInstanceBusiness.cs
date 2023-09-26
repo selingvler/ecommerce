@@ -9,4 +9,5 @@ public interface IOrderInstanceBusiness
     public Task<IEnumerable> ViewOrderDetails(Guid orderId);
     public IEnumerable<OrderInstanceResponseModel> View();
     public Task DeleteOrderInstance(Guid id);
+    public IEnumerable WaitingForApproval(Guid userId);
 }

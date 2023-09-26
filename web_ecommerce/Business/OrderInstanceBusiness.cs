@@ -8,11 +8,13 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
 {
     private readonly IOrderInstanceService _service;
     private readonly IUserProductService _userProductService;
+    private readonly IUserService _userService;
 
-    public OrderInstanceBusiness(IOrderInstanceService service, IUserProductService userProductService)
+    public OrderInstanceBusiness(IOrderInstanceService service, IUserProductService userProductService,IUserService userService)
     {
         _service = service;
         _userProductService = userProductService;
+        _userService = userService;
     }
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
@@ -34,5 +36,10 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
     public async Task DeleteOrderInstance(Guid id)
     {
         await _service.DeleteOrderInstance(id);
+    }
+
+    public IEnumerable WaitingForApproval(Guid userId)
+    {
+        return _service.WaitingForApproval(userId);
     }
 }

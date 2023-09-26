@@ -39,4 +39,10 @@ public class OrderInstanceController
     {
         await _business.DeleteOrderInstance(id);
     }
+
+    [HttpGet("approvedInstances/{userId:guid}")]
+    public IEnumerable WaitingForApproval([FromRoute]Guid userId)
+    {
+        return _business.WaitingForApproval(userId);
+    }
 }
