@@ -17,7 +17,7 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
     {
-        await CreateOrderInstanceValidation(model);
+        CreateOrderInstanceValidation(model);
         return await _service.CreateOrderInstance(model);
     }
 
@@ -29,5 +29,10 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
     public IEnumerable<OrderInstanceResponseModel> View()
     {
         return _service.View();
+    }
+
+    public async Task DeleteOrderInstance(Guid id)
+    {
+        await _service.DeleteOrderInstance(id);
     }
 }

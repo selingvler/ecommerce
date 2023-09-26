@@ -14,10 +14,10 @@ public class OrderController
         _business = business;
     }
     
-    [HttpPost("{id:guid}")]
-    public async Task<Guid> CreateOrder([FromRoute] Guid id)
+    [HttpPost]
+    public async Task<Guid> CreateOrder(CreateOrderRequestModel model)
     {
-        return await _business.CreateOrder(id);
+        return await _business.CreateOrder(model);
     }
 
     [HttpDelete("{id:guid}")]

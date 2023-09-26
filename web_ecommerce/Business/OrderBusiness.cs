@@ -14,10 +14,10 @@ public partial class OrderBusiness : IOrderBusiness
         _userService = userService;
     }
 
-    public async Task<Guid> CreateOrder(Guid userId)
+    public async Task<Guid> CreateOrder(CreateOrderRequestModel model)
     {
-        await CreateOrderValidation(userId);
-        return await _service.AddOrder(userId);
+        await CreateOrderValidation(model.UserId);
+        return await _service.AddOrder(model);
     }
 
     public async Task DeleteOrder(Guid orderId)

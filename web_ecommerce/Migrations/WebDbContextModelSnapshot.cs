@@ -73,6 +73,10 @@ namespace web_ecommerce.Migrations
                     b.Property<int>("OrderUnit")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("UserProductId")
                         .HasColumnType("uuid");
 

@@ -13,9 +13,9 @@ public class OrderService : IOrderService
         _repository = repository;
     }
 
-    public async Task<Guid> AddOrder(Guid userId)
+    public async Task<Guid> AddOrder(CreateOrderRequestModel model)
     {
-        var id = await _repository.Add(userId.MapToEntity());
+        var id = await _repository.Add(model.MapToEntity());
         await _repository.SaveChange();
         return id;
     }

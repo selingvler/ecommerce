@@ -10,5 +10,5 @@ public partial class OrderBusiness
             throw new SlnException("Sipariş oluşturmak için müşteri olmanız gereklidir");
         }
     }
-    
+
 }

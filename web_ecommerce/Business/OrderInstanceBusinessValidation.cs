@@ -4,7 +4,7 @@ namespace web_ecommerce.Business;
 
 public partial class OrderInstanceBusiness
 {
-    public async Task CreateOrderInstanceValidation(CreateOrderInstanceRequestModel model)
+    private void CreateOrderInstanceValidation(CreateOrderInstanceRequestModel model)
     {
         if (model == null) throw new SlnException("İstek boş olamaz");
         if (model.OrderUnit <= 0) throw new SlnException("Sipariş adedi 0 dan fazla olmalıdır");

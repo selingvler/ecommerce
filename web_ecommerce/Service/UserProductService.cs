@@ -47,6 +47,6 @@ public class UserProductService : IUserProductService
 
     public UserProduct GetCheapestUserProduct(Guid id)
     {
-        return _repository.GetAll(x=>x.ProductId == id).OrderBy(x=>x.Price).First();
+        return _repository.GetAll(x=>x.ProductId == id).OrderBy(x=>x.Price).FirstOrDefault();
     }
 }

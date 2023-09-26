@@ -115,12 +115,13 @@ public static class ModelEntityMappers
         };
     }
 
-    public static Order MapToEntity(this Guid userId)
+    public static Order MapToEntity(this CreateOrderRequestModel model)
     {
         return new Order
         {
             Id = Guid.NewGuid(),
-            UserId = userId
+            UserId = model.UserId,
+            OrderStatus = model.OrderStatus
         };
     }
     
@@ -132,7 +133,8 @@ public static class ModelEntityMappers
             OrderId = orderInstance.OrderId,
             UserProductId = orderInstance.UserProductId,
             OrderPrice = orderInstance.OrderPrice,
-            OrderUnit = orderInstance.OrderUnit
+            OrderUnit = orderInstance.OrderUnit,
+            Status = orderInstance.Status
         };
     }
 
@@ -141,7 +143,8 @@ public static class ModelEntityMappers
         return new OrderResponseModel
         {
             OrderId = order.Id,
-            UserId = order.UserId
+            UserId = order.UserId,
+            OrderStatus = order.OrderStatus
         };
     }
     

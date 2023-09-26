@@ -8,6 +8,6 @@ public interface IOrderInstanceService
 {
     public Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model);
     public Task<IEnumerable> ViewOrderDetails(Guid orderId);
-    public Task<UserProduct> GetUserProduct(Guid id);
     public IEnumerable<OrderInstanceResponseModel> View();
+    public Task DeleteOrderInstance(Guid id);
 }

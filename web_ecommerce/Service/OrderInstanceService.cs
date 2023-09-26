@@ -11,21 +11,24 @@ public class OrderInstanceService : IOrderInstanceService
     private readonly IGenericRepository<UserProduct> _userProductRepository;
     private IUserProductService _userProductService;
     private readonly IOrderService _orderService;
+    private readonly IProductService _productService;
 
-    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository, IOrderService orderService, IUserProductService userProductService)
+    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository, IOrderService orderService, IUserProductService userProductService, IProductService productService)
     {
         _repository = repository;
         _userProductRepository = userProductRepository;
         _orderService = orderService;
         _userProductService = userProductService;
+        _productService = productService;
     }
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
     {
         await _orderService.CheckOrder(model.OrderId);
+        await _productService.CheckProduct(model.ProductId);
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
-        var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
-        if (model.OrderStatus != "approved") return orderInstanceId;
+        var orderInstance = MapToEntity(model, userProduct);
+        var orderInstanceId = await _repository.Add(orderInstance);
         userProduct.Unit = userProduct.Unit - 1;
         await _userProductRepository.Update(userProduct);
         await _repository.SaveChange();
@@ -43,12 +46,12 @@ public class OrderInstanceService : IOrderInstanceService
         return _repository.GetAll(null).Select(x => x.MapToModel());
     }
 
-    public async Task<UserProduct> GetUserProduct(Guid id)
+    public async Task DeleteOrderInstance(Guid id)
     {
-        return await _userProductRepository.Get(x => x.Id == id) ??
-               throw new SlnException("İşlem yapmak istediğiniz ürün bulunamadı");
+        var orderInstance = await _repository.Get(x => x.Id == id);
+        await _repository.Delete(orderInstance);
+        await _repository.SaveChange();
     }
-
     private static OrderInstance MapToEntity(CreateOrderInstanceRequestModel model,UserProduct userProduct)
     {
         return new OrderInstance
@@ -57,7 +60,8 @@ public class OrderInstanceService : IOrderInstanceService
             OrderId = model.OrderId,
             UserProductId = userProduct.Id,
             OrderPrice = userProduct.Price,
-            OrderUnit = model.OrderUnit
+            OrderUnit = model.OrderUnit,
+            Status = "waiting"
         };
     }
 }

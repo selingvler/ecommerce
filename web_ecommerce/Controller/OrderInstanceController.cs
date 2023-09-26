@@ -33,4 +33,10 @@ public class OrderInstanceController
     {
         return _business.View();
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task Delete([FromRoute] Guid id)
+    {
+        await _business.DeleteOrderInstance(id);
+    }
 }
