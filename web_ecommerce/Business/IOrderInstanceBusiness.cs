@@ -11,4 +11,5 @@ public interface IOrderInstanceBusiness
     public Task DeleteOrderInstance(Guid id);
     public Task<IEnumerable> WaitingForApproval(Guid userId);
     public Task OrderInstanceSellerResponse(OrderInstanceInProcessModel model);
+    public Task ReturnOrderInstance(ReturnOrderInstanceModel model);
 }

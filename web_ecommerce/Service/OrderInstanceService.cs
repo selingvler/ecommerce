@@ -10,21 +10,22 @@ public class OrderInstanceService : IOrderInstanceService
     private readonly IGenericRepository<OrderInstance> _repository;
     private readonly IGenericRepository<UserProduct> _userProductRepository;
     private readonly IUserProductService _userProductService;
-    private readonly IOrderService _orderService;
+    private readonly IGenericRepository<Order> _orderRepository;
     private readonly IProductService _productService;
 
-    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository, IOrderService orderService, IUserProductService userProductService, IProductService productService)
+    public OrderInstanceService(IGenericRepository<OrderInstance> repository,IGenericRepository<UserProduct> userProductRepository, IGenericRepository<Order> orderRepository, IUserProductService userProductService, IProductService productService)
     {
         _repository = repository;
         _userProductRepository = userProductRepository;
-        _orderService = orderService;
+        _orderRepository = orderRepository;
         _userProductService = userProductService;
         _productService = productService;
     }
 
     public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
     {
-        await _orderService.CheckOrder(model.OrderId);
+        var order = await _orderRepository.Get(x => x.Id == model.OrderId) ??
+                    throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         await _productService.CheckProduct(model.ProductId);
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
         var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
@@ -34,7 +35,8 @@ public class OrderInstanceService : IOrderInstanceService
     
     public async Task<IEnumerable> ViewOrderDetails(Guid orderId)
     {
-        await _orderService.CheckOrder(orderId);
+        var order = await _orderRepository.Get(x => x.Id == orderId) ??
+                    throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
         return _repository.GetAll(x => x.OrderId == orderId).ToList().Select(x => x.MapToModel());
     }
     
@@ -110,6 +112,35 @@ public class OrderInstanceService : IOrderInstanceService
                 await _repository.Delete(orderInstance);
                 await _repository.SaveChange();
                 break;
+        }
+    }
+
+    public async Task ReturnOrderInstance(ReturnOrderInstanceModel model)
+    {
+        var orderInstance = await _repository.Get(x => x.Id == model.OrderInstanceId) ??
+                            throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+        var userProduct = await _userProductRepository.Get(x => x.Id == orderInstance.UserProductId) ??
+                          throw new SlnException("Sipariş kaleminin içinde ürün bulunmamaktadır");
+        
+        var order = await _orderRepository.Get(x => x.Id == orderInstance.OrderId);
+        if (order.UserId != model.UserId)
+        {
+            throw new SlnException("Sadece kendinize ait siparişin ürününü iade edebilirsiniz");
+        }
+        
+        orderInstance.Status = "returned";
+        await _repository.Update(orderInstance);
+        userProduct.Unit += orderInstance.OrderUnit;
+        await _userProductRepository.Update(userProduct);
+        await _repository.SaveChange();
+
+        var orderInstances = _repository.GetAll(x => x.OrderId == order.Id).ToList();
+        var count = orderInstances.GroupBy(x => x.Status).Count();
+        if (count == 1)
+        {
+            order.OrderStatus = orderInstances[0].Status;
+            await _orderRepository.Update(order);
+            await _orderRepository.SaveChange();
         }
     }
 }

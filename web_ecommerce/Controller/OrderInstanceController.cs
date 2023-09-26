@@ -51,4 +51,11 @@ public class OrderInstanceController
     {
         await _business.OrderInstanceSellerResponse(model);
     }
+
+    [HttpPut("returnOrderInstance")]
+    public async Task ReturnOrderInstance(ReturnOrderInstanceModel model)
+    {
+        await _business.ReturnOrderInstance(model);
+    }
+    
 }

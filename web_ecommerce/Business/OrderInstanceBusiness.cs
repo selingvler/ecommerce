@@ -48,4 +48,9 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
     {
         await _service.OrderInstanceSellerResponse(model);
     }
+
+    public async Task ReturnOrderInstance(ReturnOrderInstanceModel model)
+    {
+        await _service.ReturnOrderInstance(model);
+    }
 }
