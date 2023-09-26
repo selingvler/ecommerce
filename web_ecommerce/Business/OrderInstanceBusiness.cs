@@ -38,8 +38,14 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
         await _service.DeleteOrderInstance(id);
     }
 
-    public IEnumerable WaitingForApproval(Guid userId)
+    public async Task<IEnumerable> WaitingForApproval(Guid userId)
     {
+        await WaitingForApprovalValidation(userId);
         return _service.WaitingForApproval(userId);
+    }
+
+    public async Task OrderInstanceSellerResponse(OrderInstanceInProcessModel model)
+    {
+        await _service.OrderInstanceSellerResponse(model);
     }
 }

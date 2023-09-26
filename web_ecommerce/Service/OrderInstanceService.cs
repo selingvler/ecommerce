@@ -9,7 +9,7 @@ public class OrderInstanceService : IOrderInstanceService
 {
     private readonly IGenericRepository<OrderInstance> _repository;
     private readonly IGenericRepository<UserProduct> _userProductRepository;
-    private IUserProductService _userProductService;
+    private readonly IUserProductService _userProductService;
     private readonly IOrderService _orderService;
     private readonly IProductService _productService;
 
@@ -28,6 +28,7 @@ public class OrderInstanceService : IOrderInstanceService
         await _productService.CheckProduct(model.ProductId);
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
         var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
+        await _repository.SaveChange();
         return orderInstanceId;
     }
     
@@ -49,6 +50,7 @@ public class OrderInstanceService : IOrderInstanceService
         await _repository.Delete(orderInstance);
         await _repository.SaveChange();
     }
+    
     private static OrderInstance MapToEntity(CreateOrderInstanceRequestModel model,UserProduct userProduct)
     {
         return new OrderInstance
@@ -61,7 +63,6 @@ public class OrderInstanceService : IOrderInstanceService
             Status = "waiting"
         };
     }
-
 
     public IEnumerable WaitingForApproval(Guid userId)
     {
@@ -79,5 +80,36 @@ public class OrderInstanceService : IOrderInstanceService
             }
         }
         return result.Select(x=>x.MapToModel());
+    }
+
+    public async Task OrderInstanceSellerResponse(OrderInstanceInProcessModel model)
+    {
+        var orderInstance = await _repository.Get(x => x.Id == model.OrderInstanceId) ??
+                            throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+        var userProduct = await _userProductRepository.Get(x => x.Id == orderInstance.UserProductId) ??
+                          throw new SlnException("Sipariş kaleminin içinde ürün bulunmamaktadır");
+        if (orderInstance.Status != "approved")
+        {
+            throw new SlnException("Sipariş müşteri tarafından onaylanmadan işlem yapamazsınız");
+        }
+        if (userProduct.UserId != model.UserId)
+        {
+            throw new SlnException("Sadece kendi ürününüze onay verebilir ya da reddedebilirsiniz");
+        }
+        
+        switch (model.SellerResponse)
+        {
+            case "in process":
+                userProduct.Unit -= orderInstance.OrderUnit;
+                await _userProductRepository.Update(userProduct);
+                orderInstance.Status = "in process";
+                await _repository.Update(orderInstance);
+                await _repository.SaveChange();
+                break;
+            case "declined":
+                await _repository.Delete(orderInstance);
+                await _repository.SaveChange();
+                break;
+        }
     }
 }

@@ -41,8 +41,14 @@ public class OrderInstanceController
     }
 
     [HttpGet("approvedInstances/{userId:guid}")]
-    public IEnumerable WaitingForApproval([FromRoute]Guid userId)
+    public async Task<IEnumerable> WaitingForApproval([FromRoute]Guid userId)
     {
-        return _business.WaitingForApproval(userId);
+        return await _business.WaitingForApproval(userId);
+    }
+
+    [HttpPut]
+    public async Task OrderInstanceSellerResponse(OrderInstanceInProcessModel model)
+    {
+        await _business.OrderInstanceSellerResponse(model);
     }
 }
