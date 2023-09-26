@@ -31,4 +31,10 @@ public class OrderController
     {
         return _business.ViewOrders();
     }
+
+    [HttpPut]
+    public async Task ChangeOrderStatus(ChangeOrderStatusRequestModel model)
+    {
+        await _business.ChangeOrderStatus(model);
+    }
 }

@@ -25,6 +25,12 @@ public partial class OrderBusiness : IOrderBusiness
         await _service.DeleteOrder(orderId);
     }
 
+    public async Task ChangeOrderStatus(ChangeOrderStatusRequestModel model)
+    {
+        await ChangeOrderStatusValidation(model);
+        await _service.ChangeOrderStatus(model);
+    }
+
     public IEnumerable<OrderResponseModel> ViewOrders()
     {
         return _service.ViewOrders();
