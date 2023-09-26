@@ -23,11 +23,8 @@ public partial class OrderBusiness
 
         if (model.OrderStatus != "approved")
         {
-            if (model.OrderStatus != "returned")
-            {
-                throw new SlnException(
-                    "Siparişinizin durumunu sadece approved ve returned durumlarına çevirebilirsiniz");
-            }
+            throw new SlnException(
+                "Siparişinizin durumunu sadece approved durumuna çevirebilirsiniz");
         }
     }
 }

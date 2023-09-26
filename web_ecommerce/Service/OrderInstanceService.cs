@@ -113,6 +113,16 @@ public class OrderInstanceService : IOrderInstanceService
                 await _repository.SaveChange();
                 break;
         }
+        
+        var order = await _orderRepository.Get(x=>x.Id == orderInstance.OrderId);
+        var orderInstances = _repository.GetAll(x => x.OrderId == orderInstance.OrderId).ToList();
+        var count = orderInstances.GroupBy(x => x.Status).Count();
+        if (count==1)
+        {
+            order.OrderStatus = orderInstances[0].Status;
+            await _orderRepository.Update(order);
+            await _orderRepository.SaveChange();
+        }
     }
 
     public async Task ReturnOrderInstance(ReturnOrderInstanceModel model)
