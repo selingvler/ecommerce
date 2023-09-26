@@ -7,17 +7,16 @@ namespace web_ecommerce.Business;
 public partial class ProductBusiness : IProductBusiness
 {
     private readonly IProductService _service;
-    private readonly IUserBusiness _userValidation;
-    public ProductBusiness(IProductService service, IUserBusiness userValidation)
+    private readonly IUserService _userService;
+    public ProductBusiness(IProductService service,IUserService userService)
     {
         _service = service;
-        _userValidation = userValidation;
+        _userService = userService;
     }
     
     public async Task<Guid> AddProduct(CreateProductRequestModel model)
     {
-        AddProductValidation(model);
-        await _userValidation.CheckUserTypeForManager(model.UserId);
+        await AddProductValidation(model);
         return await _service.AddProduct(model);
     }
 

@@ -43,13 +43,9 @@ public class UserService : IUserService
 
     public async Task<User> GetById(Guid id)
     {
-        var user = await _repository.Get(x => x.Id == id);
+        var user = await _repository.Get(x => x.Id == id) ??
+                   throw new SlnException("Girdiğiniz id ile bir kullanıcı bulunamadı");
         return user;
     }
-
-    public async Task CheckUser(Guid id)
-    {
-        var user = await _repository.Get(x => x.Id == id)
-            ?? throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
-    }
+    
 }

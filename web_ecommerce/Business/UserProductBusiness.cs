@@ -7,12 +7,12 @@ namespace web_ecommerce.Business;
 public partial class UserProductBusiness : IUserProductBusiness
 {
     private readonly IUserProductService _service;
-    private readonly IUserBusiness _userValidation;
+    private readonly IUserService _userService;
 
-    public UserProductBusiness(IUserProductService service,IUserBusiness userValidation)
+    public UserProductBusiness(IUserProductService service,IUserService userService)
     {
         _service = service;
-        _userValidation = userValidation;
+        _userService = userService;
     }
     
     public async Task<Guid> RegisterUserProduct(CreateUserProductRequestModel model)

@@ -4,27 +4,7 @@ namespace web_ecommerce.Business;
 
 public partial class UserBusiness 
 {
-    public async Task CheckUserTypeForManager(Guid userId)
-    {
-        var user = await _service.GetById(userId);
-        if (user == null) throw new SlnException("Girdiğiniz id ile bir kullanıcı bulunamadı");
-        if (user.UserType != "manager")
-        {
-            throw new SlnException("Ürün eklemek için yönetici olmanız gereklidir");
-        }
-    }
-
-    public async Task CheckUserTypeForSeller(Guid userId)
-    {
-        var user = await _service.GetById(userId);
-        if (user == null) throw new SlnException("Girdiğiniz id ile bir kullanıcı bulunamadı");
-        if (user.UserType != "seller")
-        {
-            throw new SlnException("Ürüne fiyat verebilmek için satıcı olmanız gereklidir");
-        }
-    }
-
-    private void AddUserValidation(CreateUserRequestModel model)
+    private static void AddUserValidation(CreateUserRequestModel model)
     {
         if (model == null) throw new SlnException("İstek boş olamaz");
         if (string.IsNullOrWhiteSpace(model.UserType)) throw new SlnException("kullanıcı tipi giriniz");

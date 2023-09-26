@@ -9,6 +9,4 @@ public interface IUserBusiness
     public IEnumerable<UserResponseModel> ViewUsers();
     public Task DeleteUser(Guid id);
     public Task UpdatePassword(UpdateUserPasswordRequestModel model);
-    public Task CheckUserTypeForManager(Guid userId);
-    public Task CheckUserTypeForSeller(Guid userId);
 }
