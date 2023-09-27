@@ -15,15 +15,11 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
         _userService = userService;
     }
 
-    public async Task<Guid> CreateOrderInstance(CreateOrderInstanceRequestModel model)
+
+    public async Task CreateOrderInstance(CreateOrderInstanceRequestModel model)
     {
         CreateOrderInstanceValidation(model);
-        return await _service.CreateOrderInstance(model);
-    }
-
-    public async Task CreateOrderInstanceUpdated(CreateOrderInstanceRequestModel model)
-    {
-        await _service.CreateOrderInstanceUpdated(model);
+        await _service.CreateOrderInstance(model);
     }
 
     public Task<IEnumerable> ViewOrderDetails(Guid orderId)

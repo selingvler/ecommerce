@@ -9,17 +9,16 @@ namespace web_ecommerce.Controller;
 public class OrderInstanceController
 {
     private readonly IOrderInstanceBusiness _business;
-
     public OrderInstanceController(IOrderInstanceBusiness business)
     {
         _business = business;
     }
 
     [HttpPost]
-    public async Task<Guid> OrderProduct(CreateOrderInstanceRequestModel model)
+    public async Task OrderProduct(CreateOrderInstanceRequestModel model)
     {
         model?.Initialize(model.OrderId);
-        return await _business.CreateOrderInstance(model);
+        await _business.CreateOrderInstance(model);
     }
 
     [HttpGet("{orderId:guid}")]
