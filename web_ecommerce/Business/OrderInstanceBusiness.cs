@@ -21,6 +21,11 @@ public partial class OrderInstanceBusiness : IOrderInstanceBusiness
         return await _service.CreateOrderInstance(model);
     }
 
+    public async Task CreateOrderInstanceUpdated(CreateOrderInstanceRequestModel model)
+    {
+        await _service.CreateOrderInstanceUpdated(model);
+    }
+
     public Task<IEnumerable> ViewOrderDetails(Guid orderId)
     {
         return _service.ViewOrderDetails(orderId);

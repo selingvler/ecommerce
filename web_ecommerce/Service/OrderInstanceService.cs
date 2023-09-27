@@ -35,11 +35,53 @@ public class OrderInstanceService : IOrderInstanceService
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
         if (userProduct.Unit < model.OrderUnit)
         {
+            var unit = model.OrderUnit;
             model.OrderUnit = userProduct.Unit;
+            var id = await _repository.Add(MapToEntity(model, userProduct)); 
+            await _repository.SaveChange();
+            var orderInstance = await _repository.Get(x => x.Id == id);
+            model.OrderUnit = unit; 
+            if (model.OrderUnit - orderInstance!.OrderUnit > 0 ) //
+            {
+                var secondProduct = _userProductRepository.GetAll(x => x.ProductId == model.ProductId).ToList()
+                    .OrderBy(x => x.Price).ElementAt(1);
+                model.OrderUnit -= orderInstance.OrderUnit;
+                await _repository.Add(MapToEntity(model, secondProduct));
+                await _repository.SaveChange();
+                return id;
+            }
         }
         var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
         await _repository.SaveChange();
         return orderInstanceId;
+    }
+
+    public async Task CreateOrderInstanceUpdated(CreateOrderInstanceRequestModel model)
+    {
+        var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
+        var condition = true;
+        if (userProduct.Unit < model.OrderUnit) condition = false;
+        do
+        {
+            if (condition== false)
+            {
+                var unit = model.OrderUnit;
+                model.OrderUnit = userProduct.Unit;
+                var id = await _repository.Add(MapToEntity(model, userProduct));
+                await _repository.SaveChange();
+                var orderInstance = await _repository.Get(x => x.Id == id);
+                model.OrderUnit = unit;
+                var secondProduct = _userProductRepository.GetAll(x => x.ProductId == model.ProductId).ToList()
+                        .OrderBy(x => x.Price).ElementAt(1);
+                model.OrderUnit -= orderInstance!.OrderUnit; //
+                await _repository.Add(MapToEntity(model, secondProduct));
+                await _repository.SaveChange();
+                break;
+            }
+            await _repository.Add(MapToEntity(model, userProduct));
+            await _repository.SaveChange();
+        } while (true);
+
     }
     
     public async Task<IEnumerable> ViewOrderDetails(Guid orderId)
@@ -121,7 +163,7 @@ public class OrderInstanceService : IOrderInstanceService
         var count = orderInstances.GroupBy(x => x.Status).Count();
         if (count==1)
         {
-            order.OrderStatus = orderInstances[0].Status;
+            order!.OrderStatus = orderInstances[0].Status; //
             await _orderRepository.Update(order);
             await _orderRepository.SaveChange();
         }
@@ -135,7 +177,7 @@ public class OrderInstanceService : IOrderInstanceService
                           throw new SlnException("Sipariş kaleminin içinde ürün bulunmamaktadır");
         
         var order = await _orderRepository.Get(x => x.Id == orderInstance.OrderId);
-        if (order.UserId != model.UserId)
+        if (order!.UserId != model.UserId) //
         {
             throw new SlnException("Sadece kendinize ait siparişin ürününü iade edebilirsiniz");
         }
