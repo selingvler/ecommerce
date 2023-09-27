@@ -7,13 +7,11 @@ namespace web_ecommerce.Business;
 public partial class OrderInstanceBusiness : IOrderInstanceBusiness
 {
     private readonly IOrderInstanceService _service;
-    private readonly IUserProductService _userProductService;
     private readonly IUserService _userService;
 
-    public OrderInstanceBusiness(IOrderInstanceService service, IUserProductService userProductService,IUserService userService)
+    public OrderInstanceBusiness(IOrderInstanceService service, IUserService userService)
     {
         _service = service;
-        _userProductService = userProductService;
         _userService = userService;
     }
 

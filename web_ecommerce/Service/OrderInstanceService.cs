@@ -26,8 +26,17 @@ public class OrderInstanceService : IOrderInstanceService
     {
         var order = await _orderRepository.Get(x => x.Id == model.OrderId) ??
                     throw new SlnException("İşlem yapmak istediğiniz kayıt bulunamadı");
+        if (order.OrderStatus != "waiting")
+        {
+            throw new SlnException(
+                "Durumu approved, returned, in process ve completed olan siparişlere ürün eklemesi yapılamaz");
+        }
         await _productService.CheckProduct(model.ProductId);
         var userProduct = _userProductService.GetCheapestUserProduct(model.ProductId);
+        if (userProduct.Unit < model.OrderUnit)
+        {
+            model.OrderUnit = userProduct.Unit;
+        }
         var orderInstanceId = await _repository.Add(MapToEntity(model, userProduct));
         await _repository.SaveChange();
         return orderInstanceId;
@@ -70,17 +79,7 @@ public class OrderInstanceService : IOrderInstanceService
     {
         var productList = _userProductRepository.GetAll(x => x.UserId == userId).ToList();
         var approvedInstances = _repository.GetAll(x => x.Status == "approved").ToList();
-        var result = new List<OrderInstance>();
-        foreach (var userProduct in productList)
-        {
-            foreach (var instance in approvedInstances)
-            {
-                if (instance.UserProductId == userProduct.Id)
-                {
-                    result.Add(instance);
-                }
-            }
-        }
+        var result = (from userProduct in productList from instance in approvedInstances where instance.UserProductId == userProduct.Id select instance).ToList();
         return result.Select(x=>x.MapToModel());
     }
 
@@ -91,17 +90,20 @@ public class OrderInstanceService : IOrderInstanceService
         var userProduct = await _userProductRepository.Get(x => x.Id == orderInstance.UserProductId) ??
                           throw new SlnException("Sipariş kaleminin içinde ürün bulunmamaktadır");
         if (orderInstance.Status != "approved")
-        {
             throw new SlnException("Sipariş müşteri tarafından onaylanmadan işlem yapamazsınız");
-        }
+        
         if (userProduct.UserId != model.UserId)
-        {
             throw new SlnException("Sadece kendi ürününüze onay verebilir ya da reddedebilirsiniz");
-        }
         
         switch (model.SellerResponse)
         {
             case "in process":
+                if (userProduct.Unit <= 0)
+                {
+                    await _repository.Delete(orderInstance);
+                    await _repository.SaveChange();
+                    throw new SlnException("Satın almak istediğiniz üründe stok kalmamıştır");
+                }
                 userProduct.Unit -= orderInstance.OrderUnit;
                 await _userProductRepository.Update(userProduct);
                 orderInstance.Status = "in process";
