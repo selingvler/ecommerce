@@ -55,9 +55,31 @@ public static class ExceptionMiddlewareExtensions
     }
 }
 
-public class ErrorResponse
+public class ErrorResponse : BaseClass
 {
+    private HttpStatusCode _statusCode;
+    private string _errorMessage;
     public ErrorResponse(HttpStatusCode statusCode, string errorMessage)
     {
+        _statusCode = statusCode;
+        _errorMessage = errorMessage;
     }
+
+    public override HttpStatusCode StatusCode
+    {
+        get => _statusCode;
+        set => _statusCode = value;
+    }
+
+    public override string ErrorMessage
+    {
+        get => _errorMessage;
+        set => _errorMessage = value;
+    }
+}
+
+public class BaseClass
+{
+    public virtual HttpStatusCode StatusCode { get; set; }
+    public virtual string ErrorMessage { get; set; }
 }
